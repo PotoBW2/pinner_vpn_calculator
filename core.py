@@ -1,7 +1,41 @@
-from utils import result_ping, id_servidor, id_vpn, crear_vpn, crear_servidor
+from utils import result_ping, id_servidor, id_vpn, crear_vpn, crear_servidor, datos_vpn
 import keyboard
 import time
+import threading
 
+print("***************************************************************************************************************")
+print("* Lista de VPNs                                                                                               *")
+print("***************************************************************************************************************")
+datos = datos_vpn()
+for dato in datos_vpn():
+    texto = "* " + str(dato["id"]) + " - " + str(dato["nombre"])
+    repeticiones = 110 - len(texto)
+    while repeticiones > 0:
+        texto = texto + " "
+        repeticiones = repeticiones - 1
+    texto = texto + "*"
+    print(texto)
+print("***************************************************************************************************************")
+bandera_vpn = True
+while bandera_vpn:
+    selecion_vpn = input(" Seleccione la VPN o introduzca el nombre de la VPN para introducirla en el sistema: ")
+    try:
+        number_vpn = int(selecion_vpn)
+        if number_vpn in [id["id"] for id in datos]:
+            vpn = number_vpn
+            bandera_vpn = False
+        else:
+            print(
+                "***************************************************************************************************************")
+            print(
+                "*** ERROR: NO HA INTRODUCIDO EL NÚMERO DEL SERVIDOR CORRECTAMENTE                                           ***")
+            print(
+                "***************************************************************************************************************")
+    except:
+        crear_vpn(selecion_vpn)
+        vpn = id_vpn(selecion_vpn)
+        bandera_vpn = False
+print("El id es: " + str(vpn))
 servidor = "us-1"
 vpn = "protonVPN-OpenVPN"
 
@@ -18,16 +52,18 @@ if not id_serv:
     print("Servidor creado con exito")
     id_serv = id_servidor(servidor)
 
-
-def accion_repetitiva():
-    print(result_ping("www.granma.cu"))
-    time.sleep(1)
-
-
-print("Prkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkku78888888888888888888888888b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b sdeeeeeeeeeeeez ESPACIO para detener el programa...")
-
-while True:
-    accion_repetitiva()
-    if keyboard.is_pressed('space'):
-        print("\nPrograma detenido por el usuario")
-        break
+# condicion_de_parada = True
+# def accion_repetitiva():
+#     while condicion_de_parada:
+#         result_ping("www.granma.cu")
+#         time.sleep(1)
+# hilo = threading.Thread(target=accion_repetitiva)
+# hilo.start()
+#
+# print("ESPACIO para detener el programa...")
+#
+# while True:
+#     if keyboard.is_pressed('space'):
+#         condicion_de_parada = False
+#         print("\nPrograma detenido por el usuario")
+#         break

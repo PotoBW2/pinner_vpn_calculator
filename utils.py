@@ -53,3 +53,13 @@ def crear_servidor(nombre, vpn):
     cursor.execute("INSERT INTO servidor (nombre, vpn) VALUES ('" + nombre + "', " + str(vpn) + ")")
     conn.commit()
     conn.close()
+
+def datos_vpn():
+    cursor, conn = open_connection()
+    cursor.execute("SELECT id,nombre FROM vpn")
+    registros = cursor.fetchall()
+    resp = []
+    for registro in registros:
+        resp.append({"id":registro[0], "nombre":registro[1]})
+    return resp
+    conn.close()
