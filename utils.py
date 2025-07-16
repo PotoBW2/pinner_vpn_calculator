@@ -1,15 +1,19 @@
+import time
 from ping3 import ping
 import sqlite3
+from datetime import date
 
 conexion = None
 
 
-def result_ping(url):
-    result = ping(url)
-    if result:
-        return round(result * 1000)
-    else:
-        return False
+def result_ping(url, servidor):
+    hora = time.strftime("%H:%M")
+    fecha = date.today()
+    bandera = existe_ping(servidor, hora)
+    if not bandera:
+        result = ping(url)
+        if result:
+            crear_ping(servidor, round(result * 1000), hora, fecha)
 
 
 def open_connection():
@@ -17,9 +21,9 @@ def open_connection():
     return conexion.cursor(), conexion
 
 
-def id_servidor(servidor_nombre):
+def id_servidor(servidor_nombre, vpn):
     cursor, conn = open_connection()
-    cursor.execute("SELECT id FROM servidor WHERE nombre = '" + servidor_nombre + "'")
+    cursor.execute("SELECT id FROM servidor WHERE nombre = '" + servidor_nombre + "' AND vpn = '" + vpn + "'")
     registros = cursor.fetchall()
     if len(registros) > 0:
         for registro in registros:
@@ -54,12 +58,51 @@ def crear_servidor(nombre, vpn):
     conn.commit()
     conn.close()
 
+
 def datos_vpn():
     cursor, conn = open_connection()
     cursor.execute("SELECT id,nombre FROM vpn")
     registros = cursor.fetchall()
     resp = []
     for registro in registros:
-        resp.append({"id":registro[0], "nombre":registro[1]})
+        resp.append({"id": registro[0], "nombre": registro[1]})
     return resp
+    conn.close()
+
+
+def datos_servidor(vpn):
+    cursor, conn = open_connection()
+    cursor.execute("SELECT id,nombre FROM servidor WHERE vpn =" + str(vpn))
+    registros = cursor.fetchall()
+    resp = []
+    for registro in registros:
+        resp.append({"id": registro[0], "nombre": registro[1]})
+    return resp
+    conn.close()
+
+
+def crear_ping(servidor, ping, hora, fecha):
+    cursor, conn = open_connection()
+    cursor.execute("INSERT INTO ping (servidor, ping, hora, fecha) VALUES (" + str(servidor) + ", " + str(
+        ping) + ",'" + str(hora) + "','" + str(fecha) + "')")
+    conn.commit()
+    conn.close()
+
+
+def existe_ping(servidor, hora):
+    cursor, conn = open_connection()
+    cursor.execute("SELECT id FROM ping WHERE servidor =" + str(servidor) + " AND hora = '" + str(hora) + "'")
+    registros = cursor.fetchall()
+    if len(registros) > 0:
+        return True
+    else:
+        return False
+    conn.close()
+
+
+def eliminar_ping():
+    fecha = date.today()
+    cursor, conn = open_connection()
+    cursor.execute("DELETE FROM ping WHERE fecha = '" + str(fecha) + "'")
+    conn.commit()
     conn.close()
