@@ -1,4 +1,5 @@
-from utils import result_ping, id_servidor, id_vpn, crear_vpn, crear_servidor, datos_vpn, datos_servidor, eliminar_ping_por_fecha, \
+from utils import result_ping, id_servidor, id_vpn, crear_vpn, crear_servidor, datos_vpn, datos_servidor, \
+    eliminar_ping_por_fecha, \
     datos_grafica, nombre_vpn, nombre_servidor
 import keyboard
 import time
@@ -125,10 +126,10 @@ while bandera:
         print(" ")
 
 nom_vpn = nombre_vpn(vpn)
-nom_servidor = nombre_servidor(servidor,vpn)
+nom_servidor = nombre_servidor(servidor, vpn)
 bandera = True
 while bandera:
-    resp = input('¿Desea exportar la grafica del Servidor "'+nom_servidor+'" del VPN "'+nom_vpn+'"? (s/n): ')
+    resp = input('¿Desea exportar la grafica del Servidor "' + nom_servidor + '" del VPN "' + nom_vpn + '"? (s/n): ')
     if resp in ["n", "no", 0, False, None, "N", "No", "nO", "NO"]:
         print(" ")
         print(" ")
@@ -149,12 +150,16 @@ while bandera:
                  linestyle='-',
                  color='blue',
                  label='Ping')
+        # plt.xlim(0, 24)
+        plt.xticks([0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24],
+                   ['0:00', '2:00', '4:00', '6:00', '8:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00',
+                    '22:00', '24:00'])
         plt.title('Pings del Servidor "' + nom_servidor + '" del VPN "' + nom_vpn + '"', fontsize=14)
         plt.xlabel("Horario", fontsize=12)
         plt.ylabel("Milisegundos", fontsize=12)
         plt.grid(True, linestyle='--', alpha=0.7)
         plt.legend()
-        plt.savefig(nom_servidor+'_'+nom_vpn+'.png', dpi=300, bbox_inches='tight')
+        plt.savefig(nom_servidor + '_' + nom_vpn + '.png', dpi=300, bbox_inches='tight')
         plt.show()
         print(" ")
         print(" ")
@@ -173,5 +178,3 @@ while bandera:
             "*** ERROR: DEBE RESPONDER CORRECTAMENTE LA PREGUNTA (s/n).                                                  ***")
         print(
             "***************************************************************************************************************")
-
-
