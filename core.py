@@ -145,7 +145,7 @@ while bandera:
         x, y = datos_grafica(6)
         plt.figure(figsize=(8, 6))
         plt.plot(x, y,
-                 marker='o',
+                 marker='None',
                  linestyle='-',
                  color='blue',
                  label='Ping')
