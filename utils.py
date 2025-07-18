@@ -109,7 +109,7 @@ def existe_ping(servidor, hora):
     conn.close()
 
 
-def eliminar_ping_por_fecha():
+def eliminar_ping_por_fecha(servidor):
     fecha = date.today()
     cursor, conn = open_connection()
     cursor.execute("DELETE FROM ping WHERE fecha = '" + str(fecha) + "'")
@@ -134,6 +134,7 @@ def datos_grafica(servidor):
         registros = cursor.fetchall()
         if len(registros) > 0:
             for registro in registros:
+
                 y.append(registro[0])
         else:
             y.append(None)

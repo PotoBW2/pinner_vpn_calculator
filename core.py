@@ -104,7 +104,7 @@ while bandera:
     print(" ")
     resp = input("¿Desea mantener los ping obtenidos hoy para este servidor y esta VPN? (s/n): ")
     if resp in ["n", "no", 0, False, None, "N", "No", "nO", "NO"]:
-        eliminar_ping_por_fecha()
+        eliminar_ping_por_fecha(servidor)
         print(
             "***************************************************************************************************************")
         print(
@@ -143,7 +143,7 @@ while bandera:
         bandera = False
     elif resp in ["s", "si", 1, True, "Si", "SI", "sI", "sí", "S", "Sí", "SÍ", "sÍ", "y", "Y", "Yes", "yes"]:
         bandera = False
-        x, y = datos_grafica(6)
+        x, y = datos_grafica(servidor)
         plt.figure(figsize=(8, 6))
         plt.plot(x, y,
                  marker='None',
