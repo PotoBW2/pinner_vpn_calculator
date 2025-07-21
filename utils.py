@@ -169,8 +169,6 @@ def obtener_id_ping(servidor, hora):
         "SELECT id,ping FROM ping WHERE servidor =" + str(servidor) + " AND hora='" + hora + "'")
     registros = cursor.fetchall()
     for registro in registros:
-        print(registro[0])
-        print(registro[1])
         return registro[0], registro[1]
 
 
